@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="310dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_common_dialog"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_input_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/dialog_style_corner_top">
+
+        <TextView
+            android:id="@+id/text_input_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/dialog_title"
+            android:textColor="@color/input_dialog_title_text"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="35dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/dialog_style_corner_middle"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/edit_input"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="20dp"
+            android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_alignParentStart="true"
+            android:hint="@string/dialog_input"
+            android:lines="1"
+            android:maxLines="1"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/dialog_style_corner_bottom"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_cancel"
+            android:layout_width="98dp"
+            android:layout_height="33dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/dialog_style_corner_cancel">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/dialog_cancel"
+                android:textColor="@color/input_dialog_sure"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_sure"
+            android:layout_width="98dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/dialog_style_corner_sure">
+
+            <TextView
+                android:id="@+id/txt_defense_dialog_cancle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/dialog_sure"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

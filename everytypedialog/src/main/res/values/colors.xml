@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="input_dialog_title_bg">#ededed</color>
+    <color name="input_dialog_title_text">#333333</color>
+    <color name="input_dialog_sure">#3AC5FF</color>
+    <color name="input_dialog_cancel">#ffffff</color>
+    <color name="line_color">#dddddd</color>
+</resources>
