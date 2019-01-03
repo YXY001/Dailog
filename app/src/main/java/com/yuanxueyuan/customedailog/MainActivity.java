@@ -70,38 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         );
     }
 
-    private void test(){
-        try{
-            String getPeopleUrl = "http://47.104.163.96:7000/wsp2p/rest/visit/loginTourist";
-            //获取访问类
-            NetWorkServer netWork = NetWorkServer.getInstance();
-            //拼写URL路径和请求类型, 不填写默认为Get请求
-            Request<String> request = new StringRequest(getPeopleUrl);
-            request.setCancelSign(new Object());
-            //添加到访问队列中
-            netWork.add(0, request, this);
-        } catch (Exception e) {
-            Log.i("QQQQQQQQQQQQQ","e"+e.getMessage());
-        }
-
-    }
-
-
-    private void test1(){
-        try{
-            String getPeopleUrl = "http://47.104.163.96:7000/wsp2p/rest/visit/loginSinglePc";
-            //获取访问类
-            NetWorkServer netWork = NetWorkServer.getInstance();
-            //拼写URL路径和请求类型, 不填写默认为Get请求
-            Request<String> request = new StringRequest(getPeopleUrl);
-            request.setCancelSign(new Object());
-            //添加到访问队列中
-            netWork.add(0, request, this);
-        } catch (Exception e) {
-            Log.i("QQQQQQQQQQQQQ","e"+e.getMessage());
-        }
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
