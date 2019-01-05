@@ -77,7 +77,7 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
      */
     private void updateShowImg(boolean show) {
         editText.setTransformationMethod(show ? PasswordTransformationMethod.getInstance() : HideReturnsTransformationMethod.getInstance());
-        showImg.setImageResource(show ? R.mipmap.eye_open : R.mipmap.eye_close);
+        showImg.setImageResource(show ? R.mipmap.eye_close : R.mipmap.eye_open);
     }
 
     /**
@@ -187,7 +187,7 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
      * @date 2019/1/2 19:14
      */
     public void setPassword() {
-        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
 
     /**
@@ -197,7 +197,7 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
      * @date 2019/1/2 19:14
      */
     public void setPassword(boolean show) {
-        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
         showShowImg(show);
     }
 

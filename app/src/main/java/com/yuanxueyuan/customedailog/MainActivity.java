@@ -44,10 +44,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         edt = findViewById(R.id.edt);
         edt.setEmojiEnable(false, 100);
         edt.showCleanImg(true);
+        edt.setPassword(true);
         text = findViewById(R.id.text);
         text.setOnClickListener(this);
-        CommomDialog commomDialog = new CommomDialog(this);
-        commomDialog.show();
     }
 
 
