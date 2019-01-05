@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         edt.setEmojiEnable(false, 100);
         edt.showCleanImg(true);
         edt.setPassword(true);
+        edt.showMessage("111111");
         text = findViewById(R.id.text);
         text.setOnClickListener(this);
     }

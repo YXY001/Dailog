@@ -1,6 +1,7 @@
 package com.yuanxueyuan.customeditext.View;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 
 import com.yuanxueyuan.customeditext.R;
 import com.yuanxueyuan.customeditext.Utils.CheckInput;
+import com.yuanxueyuan.customeditext.Utils.ShowMessage;
 
 /**
  * @author yuanxueyuan
@@ -31,13 +33,13 @@ import com.yuanxueyuan.customeditext.Utils.CheckInput;
  */
 public class CustomEditText extends LinearLayout implements View.OnClickListener, TextWatcher {
 
-
     private final String LOG_TAG = "CustomEditText";
     public Context context;
 
     private EditText editText;
     private ImageView cleanImg, showImg;
     private boolean show = false;
+    private ShowMessage showMessage;
 
 
     public CustomEditText(Context context) {
@@ -50,6 +52,7 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
         this.context = context;
         View view = LayoutInflater.from(context).inflate(R.layout.edit, this);
         initView(view);
+        showMessage = new ShowMessage(context);
     }
 
 
@@ -68,6 +71,10 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
         showImg.setOnClickListener(this);
     }
 
+
+    /**************************************内部调用接口**************************************/
+
+
     /**
      * @param show 显示输入框中内容
      * @author yuanxueyuan
@@ -80,6 +87,69 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
         showImg.setImageResource(show ? R.mipmap.eye_close : R.mipmap.eye_open);
     }
 
+
+    /**
+     * @param show 是否显示
+     * @author yuanxueyuan
+     * @Title: showShowImg
+     * @Description: 显示显影密码的按钮
+     * @date 2019/1/3 15:02
+     */
+    private void showShowImg(boolean show) {
+        showImg.setVisibility(show ? VISIBLE : GONE);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.img_input_clean) {
+            if (editText != null) {
+                editText.setText("");
+            }
+        } else if (id == R.id.img_input_show) {
+            if (showImg != null) {
+                updateShowImg(show);
+                show = !show;
+            }
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (editable == null) {
+            Log.e(LOG_TAG, "editable == null");
+            return;
+        }
+        if (editable.length() >= 0) {
+            if (editText == null) {
+                Log.e(LOG_TAG, "editText == null");
+                return;
+            }
+            if (cleanImg == null) {
+                Log.e(LOG_TAG, "cleanImg == null");
+                return;
+            }
+            String str = editText.getText().toString().trim();
+            if (TextUtils.isEmpty(str)) {
+                cleanImg.setVisibility(GONE);
+            } else {
+                cleanImg.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    /**************************************对外接口**************************************/
     /**
      * @param show 是否显示清除按钮
      * @author yuanxueyuan
@@ -94,17 +164,6 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
     }
 
     /**
-     * @param show 是否显示
-     * @author yuanxueyuan
-     * @Title: showShowImg
-     * @Description: 显示显影密码的按钮
-     * @date 2019/1/3 15:02
-     */
-    private void showShowImg(boolean show) {
-        showImg.setVisibility(show ? VISIBLE : GONE);
-    }
-
-    /**
      * @param enable 使能 false 表示过滤表情
      * @author yuanxueyuan
      * @Title: emojiEnable
@@ -112,7 +171,7 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
      * @date 2018/11/23 12:02
      */
     public void setEmojiEnable(boolean enable) {
-        if (enable) {
+        if (!enable) {
             InputFilter inputFilter = new InputFilter() {
                 @Override
                 public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
@@ -125,6 +184,7 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
             editText.setFilters(new InputFilter[]{inputFilter});
         }
     }
+
 
     /**
      * @param enable 使能 false 表示过滤表情
@@ -148,6 +208,7 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
             editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(length)});
         }
     }
+
 
     /**
      * @author yuanxueyuan
@@ -201,55 +262,51 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
         showShowImg(show);
     }
 
-
-    /**************************************内部调用接口**************************************/
-
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.img_input_clean) {
-            if (editText != null) {
-                editText.setText("");
-            }
-        } else if (id == R.id.img_input_show) {
-            if (showImg != null) {
-                updateShowImg(show);
-                show = !show;
-            }
-        }
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        if (editable == null) {
-            Log.e(LOG_TAG, "editable == null");
+    /**
+     * @param message 错误信息
+     * @author yuanxueyuan
+     * @Title: showMessage
+     * @Description: 显示错误信息
+     * @date 2019/1/5 18:19
+     */
+    public void showMessage(@NonNull String message) {
+        if (editText == null) {
+            Log.e(LOG_TAG, "editText == null");
             return;
         }
-        if (editable.length() >= 0) {
-            if (editText == null) {
-                Log.e(LOG_TAG, "editText == null");
-                return;
-            }
-            if (cleanImg == null) {
-                Log.e(LOG_TAG, "cleanImg == null");
-                return;
-            }
-            String str = editText.getText().toString().trim();
-            if (TextUtils.isEmpty(str)) {
-                cleanImg.setVisibility(GONE);
-            } else {
-                cleanImg.setVisibility(View.VISIBLE);
-            }
+        if (showMessage == null) {
+            Log.e(LOG_TAG, "showMessage == null");
+            return;
         }
+        if (TextUtils.isEmpty(message)) {
+            Log.e(LOG_TAG, "message == null");
+            return;
+        }
+        showMessage.showMessage(editText);
+        showMessage.setMessageText(message);
+    }
+    /**
+     * @param message 错误信息
+     * @author yuanxueyuan
+     * @Title: showMessage
+     * @Description: 显示错误信息
+     * @date 2019/1/5 18:19
+     */
+    public void showMessage(@NonNull String message, @DrawableRes int icon) {
+        if (editText == null) {
+            Log.e(LOG_TAG, "editText == null");
+            return;
+        }
+        if (showMessage == null) {
+            Log.e(LOG_TAG, "showMessage == null");
+            return;
+        }
+        if (TextUtils.isEmpty(message)) {
+            Log.e(LOG_TAG, "message == null");
+            return;
+        }
+        showMessage.showMessage(editText);
+        showMessage.setMessageText(message);
+        showMessage.setMessageIcon(icon);
     }
 }
