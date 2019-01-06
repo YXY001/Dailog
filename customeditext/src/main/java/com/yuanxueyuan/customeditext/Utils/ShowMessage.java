@@ -1,6 +1,7 @@
 package com.yuanxueyuan.customeditext.Utils;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.DrawableRes;
@@ -21,6 +22,7 @@ import com.yuanxueyuan.customeditext.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author yuanxueyuan
@@ -38,14 +40,23 @@ public class ShowMessage extends LinearLayout {
     private ImageView messageImg;
     private TextView messageText;
     private EditText editText;
-    private Timer timer;
-    private MyHandler myHandler;
+    private Handler myHandler;
+    private Runnable runnable;
     private boolean isShake;//是否正在抖动
 
     public ShowMessage(Context context) {
         super(context);
-        myHandler = new MyHandler();
+        myHandler = new Handler();
         this.context = context;
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (editText != null) {
+                    isShake = false;
+                    editText.setVisibility(VISIBLE);
+                }
+            }
+        };
     }
 
     /**
@@ -114,7 +125,9 @@ public class ShowMessage extends LinearLayout {
             Log.e(TAG_LOG,"editText == null");
             return;
         }
-
+        if (myHandler != null) {
+            myHandler.removeCallbacks(runnable);
+        }
         if (isShake) {
             return;
         }
@@ -126,6 +139,7 @@ public class ShowMessage extends LinearLayout {
         Animation shake = AnimationUtils.loadAnimation(context, R.anim.shake_left);
         view.startAnimation(shake);
         isShake = true;
+
         shake.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -134,35 +148,13 @@ public class ShowMessage extends LinearLayout {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        myHandler.sendEmptyMessage(0);
-                        if (timer != null) {
-                            timer.cancel();
-                            timer = null;
-                        }
-                    }
-                },500);
+                myHandler.postDelayed(runnable,500);
             }
             @Override
             public void onAnimationRepeat(Animation animation) {
 
             }
         });
-    }
-
-    public class MyHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 0) {
-                isShake = false;
-                editText.setVisibility(VISIBLE);
-            }
-
-        }
     }
 
 }
