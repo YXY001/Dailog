@@ -22,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,OnResponseListener {
 
@@ -42,12 +41,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Logger.setTag("NoHttpSample"); // 设置NoHttp打印Log的TAG。
         initNoHttp();
         edt = findViewById(R.id.edt);
-        edt.setEmojiEnable(false, 100);
+        edt.setEmojiEnable(true, 10);
         edt.showCleanImg(true);
-        edt.setPassword(true);
-        edt.showMessage("111111");
-        text = findViewById(R.id.text);
-        text.setOnClickListener(this);
+        edt.setPhone();
+        edt.showMessage("错误啦",R.mipmap.eye_close);
     }
 
 

@@ -10,25 +10,29 @@
         <LinearLayout
             android:id="@+id/ll_img"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true">
             <ImageView
                 android:id="@+id/img_input_show"
                 android:layout_width="33dp"
                 android:layout_height="match_parent"
                 android:padding="5dp"
+                android:visibility="gone"
                 android:src="@mipmap/eye_close"/>
             <ImageView
                 android:id="@+id/img_input_clean"
-                android:layout_width="33dp"
+                android:layout_width="25dp"
                 android:layout_height="match_parent"
                 android:padding="5dp"
+                android:visibility="gone"
                 android:src="@mipmap/img_clean"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
             android:layout_toStartOf="@id/ll_img">
             <EditText
                 android:id="@+id/edit_input"
@@ -42,7 +46,6 @@
                 android:hint="请输入文字"
                 android:inputType="text"
                 android:singleLine="true"
-                android:text="123123123121231231231231231231212312312313131313131313131313131313131313"
                 android:textSize="15sp" />
         </LinearLayout>
     </RelativeLayout>

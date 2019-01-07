@@ -209,6 +209,20 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
         }
     }
 
+    /**
+     * @param length 长度
+     * @author yuanxueyuan
+     * @Title: setInputLength
+     * @Description: 设置输入框最大输入长度
+     * @date 2019/1/7 10:17
+     */
+    public void setInputLength(int length) {
+        if (editText == null) {
+            Log.e(LOG_TAG, "editText == null");
+            return;
+        }
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(length)});
+    }
 
     /**
      * @author yuanxueyuan
