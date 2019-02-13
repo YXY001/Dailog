@@ -4,6 +4,6 @@
     <solid android:color="@color/input_dialog_sure" />
 
     <corners
-        android:radius="5dp"/>
+        android:radius="8dp"/>
 
 </shape>

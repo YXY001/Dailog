@@ -31,22 +31,10 @@
         android:background="@drawable/dialog_style_corner_middle"
         android:gravity="center">
 
-        <EditText
-            android:id="@+id/edit_input"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginEnd="33dp"
-            android:layout_marginStart="20dp"
-            android:background="@null"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_alignParentStart="true"
-            android:hint="@string/dialog_input"
-            android:lines="1"
-            android:maxLines="1"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:textSize="15sp" />
+        <!--<com.yuanxueyuan.customeditext.View.CustomEditText-->
+            <!--android:id="@+id/edit_input"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="48dp" />-->
     </RelativeLayout>
 
     <LinearLayout
@@ -65,6 +53,7 @@
             android:background="@drawable/dialog_style_corner_cancel">
 
             <TextView
+                android:id="@+id/text_input_left"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -82,7 +71,7 @@
             android:background="@drawable/dialog_style_corner_sure">
 
             <TextView
-                android:id="@+id/txt_defense_dialog_cancle"
+                android:id="@+id/text_input_right"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"

@@ -1,9 +1,15 @@
 package com.yuanxueyuan.everytypedialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,7 +24,7 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
     /**********控件*********/
     private Context mContext;
     private TextView titleTextView, contentTextView, leftTextView, rightTextView, inputTitleView, inputContentTextView, inputLeftTextView, inputRightTextView;
-    private LinearLayout titleLL, inputTitleLL;
+    private LinearLayout titleLL, inputTitleLL, leftLL, rightLL;
     private OnCommonListener onCommonListener;
     private EditText editText;
 
@@ -30,6 +36,8 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
     /**********变量*********/
     private String strTitle, strContent, strRight, strLeft;
     private int DAILOG_TYEP = APPConstantValue.DAILOG_COMMON;
+    private @ColorInt int titleColorId;
+    private @DrawableRes int titleDrawableRes;
 
 
     /**********重构方法*********/
@@ -55,10 +63,10 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
      * @Description: 弹框，支持设置主题
      * @date 2018/11/28 15:43
      */
-    public CommomDialog(@NonNull Context context, @StyleRes int themeResId) {
-        super(context, themeResId);
-        this.mContext = context;
-    }
+//    public CommomDialog(@NonNull Context context, @StyleRes int themeResId) {
+//        super(context, themeResId);
+//        this.mContext = context;
+//    }
 
     /**
      * @param context          上下文
@@ -82,6 +90,20 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
      * @date 2018/11/30 11:30
      */
     public CommomDialog(@NonNull Context context, int type, @NonNull OnCommonListener onCommonListener) {
+        super(context);
+        this.mContext = context;
+        DAILOG_TYEP = type;
+        this.onCommonListener = onCommonListener;
+    }
+
+    /**
+     * @param context 上下文
+     * @author yuanxueyuan
+     * @Title: CommomDialog
+     * @Description: 弹框，用户可以指定弹框的类型
+     * @date 2018/11/30 11:30
+     */
+    public CommomDialog(@NonNull Context context, int type) {
         super(context);
         this.mContext = context;
         DAILOG_TYEP = type;
@@ -142,14 +164,24 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
      * @date 2018/11/29 17:09
      */
     public void setTitleVisible(boolean visible) {
-        if (titleLL == null) {
+        if (titleLL == null && inputTitleLL == null) {
             Log.e(LOG_TAG, "need init view first");
             return;
         }
         if (visible) {
-            titleLL.setVisibility(View.VISIBLE);
+            if (titleLL != null) {
+                titleLL.setVisibility(View.VISIBLE);
+            }
+            if (inputTitleLL != null) {
+                inputTitleLL.setVisibility(View.VISIBLE);
+            }
         } else {
-            titleLL.setVisibility(View.GONE);
+            if (titleLL != null) {
+                titleLL.setVisibility(View.GONE);
+            }
+            if (inputTitleLL != null) {
+
+            }
         }
     }
 
@@ -179,18 +211,61 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
      * @Description: 设置左边的按钮显隐
      * @date 2018/11/29 17:15
      */
-    public void setLeftVisible(boolean visible) {
-        if (leftTextView == null) {
-            Log.e(LOG_TAG, "need init view first");
-            return;
-        }
+    private void setLeftVisible(boolean visible) {
         if (visible) {
-            leftTextView.setVisibility(View.VISIBLE);
+            if (leftTextView != null) {
+                leftTextView.setVisibility(View.VISIBLE);
+            }
+            if (leftLL != null) {
+                leftLL.setVisibility(View.VISIBLE);
+            }
         } else {
-            leftTextView.setVisibility(View.GONE);
+            if (leftTextView != null) {
+                leftTextView.setVisibility(View.GONE);
+            }
+            if (leftLL != null) {
+                leftLL.setVisibility(View.GONE);
+            }
         }
     }
 
+
+    /**
+     * @param colorId 颜色id
+     * @author yuanxueyuan
+     * @Title: setTitleBackgroundColor
+     * @Description: 设置标题的背景颜色
+     * @date 2019/1/30 16:02
+     */
+    @SuppressLint("ResourceAsColor")
+    public void setTitleBackgroundColor(@ColorInt int colorId) {
+        if (titleLL != null) {
+            titleLL.setBackgroundColor(colorId);
+        } else if (inputTitleLL != null){
+            inputTitleLL.setBackgroundColor(colorId);
+        } else {
+            //方便于用户在show之前进行设置
+            titleColorId = colorId;
+        }
+    }
+
+    /**
+     * @param drawable 资源文件id
+     * @author yuanxueyuan
+     * @Title: setTitleBackgroundDrawable
+     * @Description: 设置标题的背景,这种方法之后再show方法后边使用
+     * @date 2019/1/30 16:03
+     */
+    public void setTitleBackgroundDrawable(@DrawableRes int drawable) {
+        if (titleLL != null) {
+            titleLL.setBackgroundResource(drawable);
+        } else if (inputTitleLL != null){
+            inputTitleLL.setBackgroundResource(drawable);
+        } else {
+            //方便于用户在show之前进行设置
+            titleDrawableRes = drawable;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +287,9 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
                 break;
             //带有输入框的弹框
             case APPConstantValue.DAILOG_EDIT:
+                initInputDialog();
+                initInputValues();
+                initInputListener();
                 break;
 
             default:
@@ -238,13 +316,20 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
         rightTextView = findViewById(R.id.text_common_right);
     }
 
-    private void initInputDialog(){
+    /**
+     * @author yuanxueyuan
+     * @Title: initInputDialog
+     * @Description: 初始化带有输入框的弹框
+     * @date 2019/1/29 16:52
+     */
+    private void initInputDialog() {
         setContentView(R.layout.dialog_input);
         inputTitleView = findViewById(R.id.text_input_title);
         inputTitleLL = findViewById(R.id.ll_input_title);
-//        inputContentTextView = findViewById(R.id.text_common_content);
-//        leftTextView = findViewById(R.id.text_common_left);
-//        rightTextView = findViewById(R.id.text_common_right);
+        leftLL = findViewById(R.id.ll_cancel);
+        leftTextView = findViewById(R.id.text_input_left);
+        rightLL = findViewById(R.id.ll_sure);
+        rightTextView = findViewById(R.id.text_input_right);
     }
 
 
@@ -256,19 +341,51 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
      * @Description: 初始化普通的弹框数据
      * @date 2018/11/30 11:34
      */
+    @SuppressLint({"ResourceAsColor", "ResourceType"})
     private void initCommonValues() {
         //设置标题
         if (titleTextView != null && titleTextView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(strTitle)) {
             titleTextView.setText(strTitle);
         }
+        if (titleLL != null && titleLL.getVisibility() == View.VISIBLE && titleColorId != 0x0) {
+            titleLL.setBackgroundColor(mContext.getResources().getColor(titleColorId));
+        }
+
         if (contentTextView != null && contentTextView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(strContent)) {
             contentTextView.setText(strContent);
         }
         if (leftTextView != null && leftTextView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(strLeft)) {
-            leftTextView.setText(strContent);
+            leftTextView.setText(strLeft);
         }
         if (rightTextView != null && rightTextView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(strRight)) {
-            rightTextView.setText(strContent);
+            rightTextView.setText(strRight);
+        }
+    }
+
+    /**
+     * @author yuanxueyuan
+     * @Title: initInputValues
+     * @Description: 初始化带有输入框的弹框的数据
+     * @date 2019/1/29 17:09
+     */
+    @SuppressLint("ResourceType")
+    private void initInputValues() {
+        //设置标题
+        if (inputTitleView != null && inputTitleView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(strTitle)) {
+            inputTitleView.setText(strTitle);
+        }
+        if (inputTitleLL != null && inputTitleLL.getVisibility() == View.VISIBLE && titleColorId != 0x0) {
+            inputTitleLL.setBackgroundColor(mContext.getResources().getColor(titleColorId));
+        }
+
+        if (contentTextView != null && contentTextView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(strContent)) {
+            contentTextView.setText(strContent);
+        }
+        if (leftTextView != null && leftTextView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(strLeft)) {
+            leftTextView.setText(strLeft);
+        }
+        if (rightTextView != null && rightTextView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(strRight)) {
+            rightTextView.setText(strRight);
         }
     }
 
@@ -286,6 +403,22 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
         }
         if (rightTextView != null && rightTextView.getVisibility() == View.VISIBLE) {
             rightTextView.setOnClickListener(this);
+        }
+    }
+
+
+    /**
+     * @author yuanxueyuan
+     * @Title: initInputListener
+     * @Description: 初始化带有输入框的监听事件
+     * @date 2019/1/29 16:54
+     */
+    private void initInputListener() {
+        if (leftLL != null && leftLL.getVisibility() == View.VISIBLE) {
+            leftLL.setOnClickListener(this);
+        }
+        if (rightLL != null && rightLL.getVisibility() == View.VISIBLE) {
+            rightLL.setOnClickListener(this);
         }
     }
 
@@ -307,7 +440,7 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
         int id = view.getId();
         if (id == R.id.text_common_left) {
             //普通弹框的左边按钮点击事件
-            if (leftTextView.getVisibility() == View.VISIBLE) {
+            if (leftTextView != null && leftTextView.getVisibility() == View.VISIBLE) {
                 if (onCommonListener != null) {
                     onCommonListener.onClickCommonLeft();
                 }
@@ -315,10 +448,26 @@ public class CommomDialog extends Dialog implements View.OnClickListener {
             }
         } else if (id == R.id.text_common_right) {
             //普通弹框的右边按钮点击事件
-            if (onCommonListener != null) {
-                onCommonListener.onClickCommonRight();
+            if (rightTextView != null && rightTextView.getVisibility() == View.VISIBLE) {
+                if (onCommonListener != null) {
+                    onCommonListener.onClickCommonRight();
+                }
+                this.dismiss();
             }
-            this.dismiss();
+        } else if (id == R.id.ll_cancel) {
+            if (leftLL != null && leftLL.getVisibility() == View.VISIBLE) {
+                if (onCommonListener != null) {
+                    onCommonListener.onClickCommonLeft();
+                }
+                this.dismiss();
+            }
+        } else if (id == R.id.ll_sure ) {
+            if (rightLL != null && rightLL.getVisibility() == View.VISIBLE) {
+                if (onCommonListener != null) {
+                    onCommonListener.onClickCommonRight();
+                }
+                this.dismiss();
+            }
         }
     }
 

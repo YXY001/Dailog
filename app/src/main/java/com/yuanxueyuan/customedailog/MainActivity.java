@@ -1,5 +1,7 @@
 package com.yuanxueyuan.customedailog;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yanzhenjie.nohttp.rest.StringRequest;
 import com.yuanxueyuan.customeditext.View.CustomEditText;
+import com.yuanxueyuan.everytypedialog.APPConstantValue;
 import com.yuanxueyuan.everytypedialog.CommomDialog;
 
 import org.json.JSONException;
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         edt.showCleanImg(true);
         edt.setPhone();
         edt.showMessage("错误啦",R.mipmap.eye_close);
+        text = findViewById(R.id.text_test_dialog);
+        text.setOnClickListener(this);
     }
 
 
@@ -67,14 +72,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         );
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.text:
-                CommomDialog commomDialog = new CommomDialog(this);
+            case R.id.text_test_dialog:
+                CommomDialog commomDialog = new CommomDialog(this, APPConstantValue.DAILOG_EDIT, new CommomDialog.OnCommonListener() {
+                    @Override
+                    public void onClickCommonLeft() {
+                        Log.i("QQQQQQQQQQQ","onClickCommonLeft");
+                    }
+
+                    @Override
+                    public void onClickCommonRight() {
+                        Log.i("QQQQQQQQQQQ","onClickCommonRight");
+                    }
+                });
+                String context = null;
+                commomDialog.setCancelText(context);
+                commomDialog.setSureText("222222222");
+                commomDialog.setTitle("哈哈哈哈");
+                commomDialog.setTitleBackgroundColor(R.color.colorPrimary);
                 commomDialog.show();
-
-
                 break;
             default:
                 break;
