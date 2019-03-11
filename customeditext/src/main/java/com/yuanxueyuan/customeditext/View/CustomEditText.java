@@ -323,4 +323,17 @@ public class CustomEditText extends LinearLayout implements View.OnClickListener
         showMessage.setMessageText(message);
         showMessage.setMessageIcon(icon);
     }
+
+    /**
+     * @author yuanxueyuan
+     * @Title: getText
+     * @Description: 获取数据
+     * @date 2019/3/11 15:10
+     */
+    public String getText() {
+        if (editText != null) {
+            return editText.getText().toString().trim();
+        }
+        return "";
+    }
 }
