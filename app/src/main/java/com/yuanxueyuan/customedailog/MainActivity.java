@@ -77,22 +77,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.text_test_dialog:
-                CommomDialog commomDialog = new CommomDialog(this, APPConstantValue.DAILOG_EDIT, new CommomDialog.OnCommonListener() {
+                CommomDialog commomDialog = new CommomDialog(this, APPConstantValue.DAILOG_EDIT, new CommomDialog.OnInputDialogListener() {
+
                     @Override
-                    public void onClickCommonLeft() {
-                        Log.i("QQQQQQQQQQQ","onClickCommonLeft");
+                    public void onClickLeft() {
+
                     }
 
                     @Override
-                    public void onClickCommonRight() {
-                        Log.i("QQQQQQQQQQQ","onClickCommonRight");
+                    public void onClickRight(String text) {
+
                     }
                 });
                 String context = null;
                 commomDialog.setCancelText(context);
                 commomDialog.setSureText("222222222");
                 commomDialog.setTitle("哈哈哈哈");
-                commomDialog.setTitleBackgroundColor(R.color.colorPrimary);
+                commomDialog.setContentBackgroundColor(R.color.colorPrimaryDark);
                 commomDialog.show();
                 break;
             default:
