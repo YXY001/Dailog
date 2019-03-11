@@ -31,10 +31,10 @@
         android:background="@drawable/dialog_style_corner_middle"
         android:gravity="center">
 
-        <!--<com.yuanxueyuan.customeditext.View.CustomEditText-->
-            <!--android:id="@+id/edit_input"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="48dp" />-->
+        <com.yuanxueyuan.customeditext.View.CustomEditText
+            android:id="@+id/edit_input_custom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
 
     <LinearLayout
